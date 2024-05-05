@@ -6,14 +6,37 @@ services:
     hostname: tortoise-gazebo-sim
     # command: tail -f /dev/null
     command: bash -c "source /root/catkin_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
-
     environment:
       - DISPLAY
+      - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/simulation_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
     networks:
       - ros1_net
+
+  mapping:
+    image: ros1_mapping:latest
+    hostname: tortoise-mapping
+    restart: always
+    depends_on:
+      - gazebo_sim
+    command: bash -c "source /root/catkin_ws/devel/setup.bash && roslaunch tortoisebot_slam mapping.launch"
+    environment:
+      - DISPLAY
+      - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/simulation_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
+    networks:
+      - ros1_net
+
+  waypoint_action:
+    image: ros1_waypt:latest
+    hostname: tortoise-waypt
+    retart: always
+    depends_on:
+      - gazebo_sim
 
 networks:
   ros1_net:

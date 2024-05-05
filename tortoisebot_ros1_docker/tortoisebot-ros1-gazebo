@@ -1,4 +1,3 @@
-
 FROM ros1_base:latest
 
 # Minimal setup
