@@ -25,9 +25,8 @@ services:
     volumes:
       - /home/tortoisebot/.Xauthority:/root/.Xauthority 
       - ~/ros1_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
-    networks:
-      - host
-
+    network_mode: host
+  
   slam: 
     build:
       context: ./mapping
@@ -42,5 +41,4 @@ services:
     volumes:
       - /home/tortoisebot/.Xauthority:/root/.Xauthority 
       - ~/ros1_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
-    networks:
-      - host
+    network_mode: host
