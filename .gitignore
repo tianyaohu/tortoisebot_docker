@@ -1,0 +1,11 @@
+# Ignore everything
+
+*.txt
+# Ignore everything
+*/
+
+# Un-ignore directories with 'docker' in their names
+# You must manually specify these directories
+!*/docker*/
+!tortoisebot_ros1_docker/
+
