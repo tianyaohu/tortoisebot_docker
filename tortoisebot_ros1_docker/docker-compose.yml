@@ -5,8 +5,7 @@ services:
   ros-master:
     image: ros:noetic-ros-core
     command: roscore
-    networks:
-      - host
+    network_mode: host
     restart: always
     ports:
       - "11311:11311"
