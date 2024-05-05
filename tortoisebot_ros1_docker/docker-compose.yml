@@ -1,0 +1,19 @@
+version: "3.3"
+
+services:
+  gazebo_sim:
+    image: ros1_gazebo_sim:latest
+    hostname: tortoise-gazebo-sim
+    # command: tail -f /dev/null
+    command: bash -c "source /root/catkin_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
+
+    environment:
+      - DISPLAY
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/simulation_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
+    networks:
+      - ros1_net
+
+networks:
+  ros1_net:
