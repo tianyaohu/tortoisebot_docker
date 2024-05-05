@@ -1,4 +1,4 @@
-FROM nvidia/cudagl:11.1.1-base-ubuntu20.04
+FROM ros:noetic-ros-core
 
 # Minimal setup
 RUN apt-get update \
