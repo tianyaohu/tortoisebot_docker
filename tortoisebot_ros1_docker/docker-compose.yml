@@ -1,7 +1,17 @@
 version: "3.3"
 
 services:
+  # ROS1 Base Image
+  nvidia_ros1:
+    build: 
+      context: ./ros1_base
+      dockerfile: Dockerfile
+    image: nvidia_ros1:latest
+
   gazebo_sim:
+    build:
+      context: ./gazebo_sim
+      dockerfile: Dockerfile
     image: ros1_gazebo_sim:latest
     hostname: tortoise-gazebo-sim
     # command: tail -f /dev/null
@@ -16,6 +26,9 @@ services:
       - ros1_net
 
   mapping:
+    build:
+      context: ./mapping
+      dockerfile: Dockerfile
     image: ros1_mapping:latest
     hostname: tortoise-mapping
     restart: always
@@ -32,11 +45,25 @@ services:
       - ros1_net
 
   waypoint_action:
+    build:
+      context: ./waypoint_action
+      dockerfile: Dockerfile
     image: ros1_waypt:latest
     hostname: tortoise-waypt
-    retart: always
+    restart: always
     depends_on:
       - gazebo_sim
+    command: |
+      bash -c "source /opt/ros/noetic/setup.bash &&
+             catkin_make &&
+             source /root/catkin_ws/devel/setup.bash &&
+             rosrun course_web_dev_ros tortoisebot_action_server.py"
+    environment:
+      - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
+    volumes:
+      - ~/simulation_ws/src/course_web_dev_ros/:/root/catkin_ws/src/course_web_dev_ros
+    networks:
+      - ros1_net
 
 networks:
   ros1_net:

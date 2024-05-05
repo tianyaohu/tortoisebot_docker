@@ -1,4 +1,4 @@
-FROM ros1_base:latest
+FROM nvidia_ros1:latest
 
 # Minimal setup
 RUN apt-get update \
