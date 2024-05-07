@@ -2,42 +2,58 @@ version: "3.3"
 
 services:
   # ROS1 Base Image
-  ros-master:
+  roscore:
     image: ros:noetic-ros-core
+    restart: always
     command: roscore
     network_mode: host
-    restart: always
-    ports:
-      - "11311:11311"
+    environment:
+      - ROS_MASTER_URI=http://master:11311
+      - ROS_HOSTNAME=master
 
-  firmware: 
+  firmware:
     build:
       context: ./firmware
       dockerfile: Dockerfile
     image: ros1_firmware:latest
     hostname: tortoisebot-ros1-firmware
-    command: bash -c "roslaunch tortoisebot_firmware bringup.launch"
-    restart: always
-    environment:
-      - DISPLAY
-      - ROS_MASTER_URI=http://ros-master:11311
-    volumes:
-      - /home/tortoisebot/.Xauthority:/root/.Xauthority 
-      - ~/ros1_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
     network_mode: host
-  
+    cap_add:
+      - SYS_RAWIO
+    security_opt:
+      - "no-new-privileges:true"
+    # privileged: true
+    command: bash -c "source devel/setup.bash && pwd && roslaunch tortoisebot_firmware bringup.launch"
+    devices:
+      - "/dev/mem:/dev/mem"
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev/video0:/dev/video0"
+    environment:
+      - ROS_MASTER_URI=http://master:11311
+      - ROS_HOSTNAME=master
+    volumes:
+      - ~/ros1_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
+      - ~/ros1_ws/src/raspicam_node/:/root/catkin_ws/src/raspicam_node
+
   slam: 
     build:
       context: ./mapping
       dockerfile: Dockerfile
     image: ros1_slam:latest
-    hostname: tortoisebot-ros1-firmware
-    command: bash -c "roslaunch tortoisebot_slam tortoisebot_slam.launch"
-    restart: always
+    hostname: tortoisebot-ros1-slam
+    # restart: always
+    depends_on:
+      - firmware
+    command: bash -c "roslaunch tortoisebot_slam mapping.launch"
+    network_mode: host
     environment:
       - DISPLAY
-      - ROS_MASTER_URI=http://ros-master:11311
+      - ROS_MASTER_URI=http://master:11311
+      - ROS_HOSTNAME=master
     volumes:
       - /home/tortoisebot/.Xauthority:/root/.Xauthority 
-      - ~/ros1_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
-    network_mode: host
+      - ~/ros1_ws/src/tortoisebot/tortoisebot_slam:/root/catkin_ws/src/tortoisebot_slam
+      - ~/ros1_ws/src/tortoisebot/tortoisebot_description:/root/catkin_ws/src/tortoisebot_description
+
+
+
