@@ -7,20 +7,3 @@ RUN apt-get update \
 ARG DEBIAN_FRONTEND=noninteractive
 RUN dpkg-reconfigure locales
 
-# Set the default shell to bash to ensure sourcing works correctly
-SHELL ["/bin/bash", "-c"]
-
-# Create a Catkin workspace and clone TurtleBot3 repos
-RUN source /opt/ros/noetic/setup.bash \
- && mkdir -p /root/catkin_ws/src \
- && cd /root/catkin_ws/src \
- && catkin_init_workspace 
-
-# Build the Catkin workspace and ensure it's sourced
-RUN source /opt/ros/noetic/setup.bash \
- && cd /root/catkin_ws \
- && catkin_make
-RUN echo "source /root/catkin_ws/devel/setup.bash" >> ~/.bashrc
-
-# Set the working folder at startup
-WORKDIR /root/catkin_ws
