@@ -12,7 +12,7 @@ services:
     build:
       context: ./gazebo_sim
       dockerfile: Dockerfile
-    image: ros1_gazebo_sim:latest
+    image: tortoisebot-ros1-gazebo:latest
     hostname: tortoise-gazebo-sim
     # command: tail -f /dev/null
     command: bash -c "source /root/catkin_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
@@ -25,11 +25,11 @@ services:
     networks:
       - ros1_net
 
-  mapping:
+  slam:
     build:
       context: ./mapping
       dockerfile: Dockerfile
-    image: ros1_mapping:latest
+    image: tortoisebot-ros1-slam:latest
     hostname: tortoise-mapping
     restart: always
     depends_on:
@@ -48,7 +48,7 @@ services:
     build:
       context: ./waypoint_action
       dockerfile: Dockerfile
-    image: ros1_waypt:latest
+    image: tortoisebot-ros1-waypoints:latest
     hostname: tortoise-waypt
     restart: always
     depends_on:
