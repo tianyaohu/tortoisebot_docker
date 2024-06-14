@@ -1,5 +1,3 @@
-version: "3.3"
-
 services:
   # ROS1 Base Image
   roscore:
@@ -22,7 +20,7 @@ services:
       - SYS_RAWIO
     security_opt:
       - "no-new-privileges:true"
-    # privileged: true
+    privileged: true
     command: bash -c "source devel/setup.bash && pwd && roslaunch tortoisebot_firmware bringup.launch"
     devices:
       - "/dev/mem:/dev/mem"
@@ -41,7 +39,7 @@ services:
       dockerfile: Dockerfile
     image: ros1_slam:latest
     hostname: tortoisebot-ros1-slam
-    # restart: always
+    restart: always
     depends_on:
       - firmware
     command: bash -c "roslaunch tortoisebot_slam mapping.launch"
