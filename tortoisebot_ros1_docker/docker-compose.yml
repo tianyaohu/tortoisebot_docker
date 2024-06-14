@@ -13,7 +13,7 @@ services:
     build:
       context: ./firmware
       dockerfile: Dockerfile
-    image: ros1_firmware:latest
+    image: tortoisebot-ros1-real:latest
     hostname: tortoisebot-ros1-firmware
     network_mode: host
     cap_add:
@@ -37,7 +37,7 @@ services:
     build:
       context: ./mapping
       dockerfile: Dockerfile
-    image: ros1_slam:latest
+    image: tortoisebot-ros1-slam-real:latest
     hostname: tortoisebot-ros1-slam
     restart: always
     depends_on:
