@@ -14,11 +14,11 @@ services:
       dockerfile: Dockerfile
     image: tortoisebot-ros1-gazebo:latest
     hostname: tortoise-gazebo-sim
-    # command: tail -f /dev/null
     command: bash -c "source /root/catkin_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
     environment:
       - DISPLAY
       - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
+      - "SLOT_ROSBRIDGE_PORT=20001"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/simulation_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
@@ -65,5 +65,30 @@ services:
     networks:
       - ros1_net
 
+  webapp:
+    build:
+      context: ./webapp
+      dockerfile: Dockerfile
+    image: tortoisebot-ros1-webapp:latest
+    hostname: tortoise-webapp
+    ports:
+      - "7000:7000" #webapp port
+      - "11315:11315" #web video server port
+      - "9090:9090" # rosbridge port
+      - "20001:20001" #websocket_external_port
+    # restart: always
+    depends_on:
+      - gazebo_sim
+      - slam
+    environment:
+      - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
+    networks:
+      - ros1_net
+    #TO BE REMOVED VOLUMES
+    volumes:
+      # START OF TEMPRARY ~~~~~~~~~~~~
+      - ~/webpage_ws/tortoisebot_webapp/:/webpage_ws/src/tortoisebot_webapp
+      - ~/simulation_ws/src/tortoisebot_ros_web_comonents:/catkin_ws/src/tortoisebot_ros_web_comonents
+      #END OF TEMPORARY
 networks:
   ros1_net:
