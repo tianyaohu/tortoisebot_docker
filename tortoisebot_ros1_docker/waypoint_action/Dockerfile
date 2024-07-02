@@ -1,5 +1,4 @@
-
-FROM ros1_gazebo_sim:latest
+FROM nvidia_ros1:latest
 
 # Minimal setup
 RUN sudo ln -s /usr/bin/python3 /usr/bin/python
