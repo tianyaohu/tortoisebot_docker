@@ -1,5 +1,5 @@
 
-FROM nvidia_ros1:latest
+FROM tortoisebot-ros1-gazebo:latest
 
 # Minimal setup
 RUN apt-get update \
