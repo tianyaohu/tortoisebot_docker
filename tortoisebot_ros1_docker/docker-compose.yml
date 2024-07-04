@@ -21,7 +21,6 @@ services:
       - "SLOT_ROSBRIDGE_PORT=20001"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ~/simulation_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
     networks:
       - ros1_net
 
@@ -40,7 +39,6 @@ services:
       - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ~/simulation_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
     networks:
       - ros1_net
 
@@ -54,14 +52,11 @@ services:
     depends_on:
       - gazebo_sim
     command: |
-      bash -c "source /opt/ros/noetic/setup.bash &&
-             catkin_make &&
+      bash -c "
              source /root/catkin_ws/devel/setup.bash &&
-             rosrun course_web_dev_ros tortoisebot_action_server.py"
+             rosrun course_web_dev_ros turtlebot_2_action_server.py"
     environment:
       - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
-    volumes:
-      - ~/simulation_ws/src/course_web_dev_ros/:/root/catkin_ws/src/course_web_dev_ros
     networks:
       - ros1_net
 
@@ -77,6 +72,10 @@ services:
       - "9090:9090" # rosbridge port
       - "20001:20001" #websocket_external_port
     # restart: always
+    command: |
+      bash -c "
+             source /catkin_ws/devel/setup.bash &&
+             roslaunch /catkin_ws/src/tortoisebot_ros_web_comonents/web_components_launching/docker_web_components.launch"
     depends_on:
       - gazebo_sim
       - slam
@@ -88,7 +87,6 @@ services:
     volumes:
       # START OF TEMPRARY ~~~~~~~~~~~~
       - ~/webpage_ws/tortoisebot_webapp/:/webpage_ws/src/tortoisebot_webapp
-      - ~/simulation_ws/src/tortoisebot_ros_web_comonents:/catkin_ws/src/tortoisebot_ros_web_comonents
       #END OF TEMPORARY
 networks:
   ros1_net:
