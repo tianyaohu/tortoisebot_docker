@@ -11,7 +11,7 @@ RUN mkdir -p catkin_ws/src
 
 # Git clone the WEBAPP components into catkin_ws
 WORKDIR /catkin_ws/src
-# RUN git clone --recurse-submodules https://github.com/tianyaohu/tortoisebot_ros_web_comonents.git
+RUN git clone --recurse-submodules https://github.com/tianyaohu/tortoisebot_ros_web_comonents.git
 
 # Build the Catkin workspace and ensure it's sourced
 RUN source /opt/ros/noetic/setup.bash && \

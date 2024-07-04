@@ -72,10 +72,6 @@ services:
       - "9090:9090" # rosbridge port
       - "20001:20001" #websocket_external_port
     # restart: always
-    command: |
-      bash -c "
-             source /catkin_ws/devel/setup.bash &&
-             roslaunch /catkin_ws/src/tortoisebot_ros_web_comonents/web_components_launching/docker_web_components.launch"
     depends_on:
       - gazebo_sim
       - slam
