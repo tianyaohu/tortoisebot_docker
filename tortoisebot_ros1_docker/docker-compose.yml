@@ -3,32 +3,31 @@ version: "3.3"
 services:
   # ROS1 Base Image
   nvidia_ros1:
-    build: 
-      context: ./ros1_base
-      dockerfile: Dockerfile
-    image: nvidia_ros1:latest
+    # build: 
+    #   context: ./ros1_base
+    #   dockerfile: Dockerfile
+    image: tianyaoh501679/tianyaoh-cp22:nvidia_ros1
 
   gazebo_sim:
-    build:
-      context: ./gazebo_sim
-      dockerfile: Dockerfile
-    image: tortoisebot-ros1-gazebo:latest
+    # build:
+    #   context: ./gazebo_sim
+    #   dockerfile: Dockerfile
+    image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-gazebo
     hostname: tortoise-gazebo-sim
     command: bash -c "source /root/catkin_ws/devel/setup.bash && roslaunch tortoisebot_gazebo tortoisebot_playground.launch"
     environment:
       - DISPLAY
       - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
-      - "SLOT_ROSBRIDGE_PORT=20001"
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       - ros1_net
 
   slam:
-    build:
-      context: ./mapping
-      dockerfile: Dockerfile
-    image: tortoisebot-ros1-slam:latest
+    # build:
+    #   context: ./mapping
+    #   dockerfile: Dockerfile
+    image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-slam
     hostname: tortoise-mapping
     restart: always
     depends_on:
@@ -43,10 +42,10 @@ services:
       - ros1_net
 
   waypoint_action:
-    build:
-      context: ./waypoint_action
-      dockerfile: Dockerfile
-    image: tortoisebot-ros1-waypoints:latest
+    # build:
+    #   context: ./waypoint_action
+    #   dockerfile: Dockerfile
+    image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-waypoints
     hostname: tortoise-waypt
     restart: always
     depends_on:
@@ -61,17 +60,17 @@ services:
       - ros1_net
 
   webapp:
-    build:
-      context: ./webapp
-      dockerfile: Dockerfile
-    image: tortoisebot-ros1-webapp:latest
+    # build:
+    #   context: ./webapp
+    #   dockerfile: Dockerfile
+    image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-webapp
     hostname: tortoise-webapp
     ports:
       - "7000:7000" #webapp port
       - "11315:11315" #web video server port
       - "9090:9090" # rosbridge port
       - "20001:20001" #websocket_external_port
-    # restart: always
+    restart: always
     depends_on:
       - gazebo_sim
       - slam
@@ -79,10 +78,6 @@ services:
       - ROS_MASTER_URI=http://tortoise-gazebo-sim:11311
     networks:
       - ros1_net
-    #TO BE REMOVED VOLUMES
-    volumes:
-      # START OF TEMPRARY ~~~~~~~~~~~~
-      - ~/webpage_ws/tortoisebot_webapp/:/webpage_ws/src/tortoisebot_webapp
-      #END OF TEMPORARY
+
 networks:
   ros1_net:
