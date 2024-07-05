@@ -21,18 +21,19 @@ newgrp docker
 In Terminal #1
 ```
 #change it to your own workspace
-cd ~/simulation_ws
-git clone https://github.com/tianyaohu/tortoisebot_docker.git .
+cd ~/simulation_ws/src
+git clone https://github.com/tianyaohu/tortoisebot_docker.git 
 ```
 
 ## Build and Run Containers
 In Terminal #1
 ```
-cd ./tortoisebot_ros1_docker
-#pull images from docker hub
+cd ./tortoisebot_ros1_docker/
+#pull remote images from docker hub (4min~)
 docker-compose pull
 ```
 Expected Result:
+![docker-compose pull](media/docker-compose-pull.gif)
 
 In Terminal #1
 ```
@@ -50,4 +51,5 @@ webpage_address
 rosbridge_address
 ```
 Expected Result:
+![docker-compose pull](media/docker-compose-up_webapp.gif)
 
