@@ -10,10 +10,13 @@ services:
       - ROS_HOSTNAME=master
 
   firmware:
+    # To Build Locally uncomment the following
     build:
       context: ./firmware
       dockerfile: Dockerfile
-    image: tortoisebot-ros1-real:latest
+    image: tortoisebot-ros1-firmware-real   
+    # To Pull Image Remotely
+    # image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-slam-real
     hostname: tortoisebot-ros1-firmware
     network_mode: host
     cap_add:
@@ -21,7 +24,7 @@ services:
     security_opt:
       - "no-new-privileges:true"
     privileged: true
-    command: bash -c "source devel/setup.bash && pwd && roslaunch tortoisebot_firmware bringup.launch"
+    command: bash -c "source devel/setup.bash && roslaunch tortoisebot_firmware bringup.launch"
     devices:
       - "/dev/mem:/dev/mem"
       - "/dev/ttyUSB0:/dev/ttyUSB0"
@@ -29,15 +32,15 @@ services:
     environment:
       - ROS_MASTER_URI=http://master:11311
       - ROS_HOSTNAME=master
-    volumes:
-      - ~/ros1_ws/src/tortoisebot/:/root/catkin_ws/src/tortoisebot
-      - ~/ros1_ws/src/raspicam_node/:/root/catkin_ws/src/raspicam_node
 
   slam: 
+    # To Build Locally uncomment the following
     build:
       context: ./mapping
       dockerfile: Dockerfile
-    image: tortoisebot-ros1-slam-real:latest
+    image: tortoisebot-ros1-slam-real
+    # To Pull Image Remotely
+    # image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-slam-real
     hostname: tortoisebot-ros1-slam
     restart: always
     depends_on:
@@ -50,8 +53,5 @@ services:
       - ROS_HOSTNAME=master
     volumes:
       - /home/tortoisebot/.Xauthority:/root/.Xauthority 
-      - ~/ros1_ws/src/tortoisebot/tortoisebot_slam:/root/catkin_ws/src/tortoisebot_slam
-      - ~/ros1_ws/src/tortoisebot/tortoisebot_description:/root/catkin_ws/src/tortoisebot_description
-
 
 

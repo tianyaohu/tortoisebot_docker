@@ -1,5 +1,5 @@
 
-FROM ros1_firmware:latest
+FROM tortoisebot-ros1-firmware-real:latest
 
 # Minimal setup
 RUN apt-get update \

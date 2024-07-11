@@ -43,10 +43,20 @@ RUN source /opt/ros/noetic/setup.bash \
  && cd /root/catkin_ws/src \
  && catkin_init_workspace 
 
-# Set the entrypoint
-COPY ros_entrypoint.sh /ros_entrypoint.sh
-RUN chmod +x /ros_entrypoint.sh
-ENTRYPOINT ["/ros_entrypoint.sh"]
+# Copy the ros1 workspace into the container
+WORKDIR /root/catkin_ws/src
+# workspace was temporarily moved into docker dir to facilitate copying
+COPY ./ros1_ws/src/tortoisebot/ ./tortoisebot
+COPY ./ros1_ws/src/raspicam_node/ ./raspicam_node
 
 # Set the working folder at startup
 WORKDIR /root/catkin_ws
+
+# Source the ROS setup file and run catkin_make
+RUN /bin/bash -c "source /opt/ros/noetic/setup.bash && catkin_make && source /root/catkin_ws/devel/setup.bash"
+
+# Set the entrypoint to source the workspace setup file
+ENTRYPOINT ["/bin/bash", "-c", "source /root/catkin_ws/devel/setup.bash && exec \"$@\"", "--"]
+
+# Default command
+CMD ["bash"]
