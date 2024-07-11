@@ -11,13 +11,14 @@ services:
 
   firmware:
     # To Build Locally uncomment the following
-    build:
-      context: ./firmware
-      dockerfile: Dockerfile
-    image: tortoisebot-ros1-firmware-real   
+    # build:
+    #   context: ./firmware
+    #   dockerfile: Dockerfile
+    # image: tortoisebot-ros1-firmware-real   
     # To Pull Image Remotely
-    # image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-slam-real
+    image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-firmware-real
     hostname: tortoisebot-ros1-firmware
+    restart: always
     network_mode: host
     cap_add:
       - SYS_RAWIO
@@ -35,12 +36,12 @@ services:
 
   slam: 
     # To Build Locally uncomment the following
-    build:
-      context: ./mapping
-      dockerfile: Dockerfile
-    image: tortoisebot-ros1-slam-real
+    # build:
+    #   context: ./mapping
+    #   dockerfile: Dockerfile
+    # image: tortoisebot-ros1-slam-real
     # To Pull Image Remotely
-    # image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-slam-real
+    image: tianyaoh501679/tianyaoh-cp22:tortoisebot-ros1-slam-real
     hostname: tortoisebot-ros1-slam
     restart: always
     depends_on:
