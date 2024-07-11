@@ -2,7 +2,7 @@ services:
   # ROS1 Base Image
   roscore:
     image: ros:noetic-ros-core
-    restart: always
+    # restart: always
     command: roscore
     network_mode: host
     environment:
