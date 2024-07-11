@@ -5,7 +5,7 @@ Welcome, This repository setsup containerized Docker environment for ROS1 Noetic
 
 ## Installation 🛠️
 
-### Install Docker 🐳
+### Install Docker & Docker Compose 2🐳
 ```
 sudo apt-get update
 sudo apt-get install docker.io docker-compose -y
@@ -22,7 +22,7 @@ In Terminal #1
 ```
 #change it to your own workspace
 cd ~/simulation_ws/src
-git clone https://github.com/tianyaohu/tortoisebot_docker.git 
+git clone https://github.com/tianyaohu/tortoisebot_ros1_docker.git 
 ```
 
 ## Build and Run Containers
