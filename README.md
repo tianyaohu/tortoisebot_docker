@@ -46,13 +46,13 @@ cd ./tortoisebot_ros1_docker/
 docker compose pull
 ```
 Expected Result:
-![docker-compose pull](media/docker-compose-pull.gif)
+![docker-compose pull](media/real_ros1_docker_pull.gif)
 
-The camera may not work properly, when rviz launch for the first time. Please check/uncheck/add the image topic again, to see the image to render properly
+The camera window in RVIZ may not work properly for the first time. Please check/uncheck/add/remove the image topic to see the image to render properly
 ```
 docker-compose up
 ```
 Expected Result:
 
-
+![docker-compose pull](media/real_ros1_docker_compose_up.gif)
 
